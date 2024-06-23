@@ -2,12 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use LDAP\Result;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
-
+use PHPUnit\Framework\Constraint\Count;
 
 Route::get('/', function () {
     return view('welcome');
@@ -183,4 +184,24 @@ Route::get('/user/{id}/role', function($id){
 
 Route::get('/role/{id}/user', function($id){
     return Role::find($id)->user;
+});
+
+
+
+//// update user table ////////////////////////////////////////
+Route::get('/country', function(){
+  return  User::find(1)->update(['country_id'=>'1']) ;
+});
+
+Route::get('insert/country', function(){
+   return DB::insert(' insert into countries (name) values(?)', ['singapore']);
+  
+});
+
+
+// has many through relationship
+Route::get('country/{id}/post', function ($id) {
+    $country = Country::find($id);
+    return $country ->posts ;
+   
 });
